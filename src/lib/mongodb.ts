@@ -1,11 +1,16 @@
 
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const envMongoUri = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error("Please define MONGODB_URI in .env.local");
+if (!envMongoUri) {
+  throw new Error(
+    "Please define MONGODB_URI in .env.local"
+  );
 }
+
+// Explicitly narrow the environment variable to string.
+const MONGODB_URI: string = envMongoUri;
 
 const cached = globalThis as typeof globalThis & {
   mongoose?: {
@@ -27,11 +32,14 @@ export async function connectDB() {
   }
 
   if (!mongooseCache.promise) {
-    mongooseCache.promise = mongoose.connect(MONGODB_URI);
+    mongooseCache.promise =
+      mongoose.connect(MONGODB_URI);
   }
 
   try {
-    mongooseCache.conn = await mongooseCache.promise;
+    mongooseCache.conn =
+      await mongooseCache.promise;
+
     return mongooseCache.conn;
   } catch (error) {
     mongooseCache.promise = null;

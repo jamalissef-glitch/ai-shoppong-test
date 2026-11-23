@@ -2,6 +2,7 @@ import { inngest } from "./client";
 import { connectDB } from "@/src/lib/mongodb";
 import Research from "@/src/models/Research";
 
+
 export const helloWorld = inngest.createFunction(
   {
     id: "hello-world",
